@@ -7,7 +7,8 @@ def clean_data(line):
 	""""""
 	pattern = r'([\[\(][^\]\)]{0,}[\]\)])'
 	line = re.sub(pattern, '', line)
-	lines = line.strip().split(' - ')
+	lines = line.split('-', 1)
+	lines = [l.strip() for l in lines]
 	return lines 
 
 

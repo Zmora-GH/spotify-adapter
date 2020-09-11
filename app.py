@@ -1,7 +1,6 @@
 import csv
 import os
 import shutil
-
 import spotipy
 
 import converter
@@ -11,8 +10,6 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 
 def search_from_file(csv_file, spoti):
-	# track = ['Exodus', 'Strike Of The Beast']
-	# temp_list.write(result['tracks']['items']['id'])
 	shutil.rmtree('temp')
 	os.mkdir('temp')
 	count = {'hit': 0, 'miss': 0}
@@ -67,18 +64,10 @@ def file_preparation(file):
 		exit()
 
 
-def main():
-
-
-	# TEST: # # # #
-	playlist_name = 'TestPlaylist'
-	file = 'test_data.txt'
-
-	# # # # # # # #
-
+def main(tracklist, playlist):
 
 	print('[] Preparation')
-	csv_file = file_preparation(file)
+	csv_file = file_preparation(tracklist)
 
 	print('[] Authorization')
 	user_id, spoti = authorization()
@@ -89,17 +78,18 @@ def main():
 	rate = search_from_file.count
 	print(f'[] Results: {rate}')
 
-	print(f'[] Create playlist {playlist_name}')
-	playlist = spoti.user_playlist_create(user_id, playlist_name)
+	print(f'[] Create playlist {playlist}')
+	playlist = spoti.user_playlist_create(user_id, playlist)
 
 	print('[] Add tracks to playlist')
 	add_to_playlist(playlist['uri'], spoti)
 
 
-
-
-
 if __name__ == '__main__':
-	main()
+	import sys
+	if len(sys.argv) == 3:
+		main(sys.argv[1], sys.argv[2])
+	else:
+		print ('Please provide a tracklist file and playlist name!')
 
 	
